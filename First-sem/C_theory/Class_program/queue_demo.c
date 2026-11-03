@@ -1,121 +1,87 @@
-
+// menu driven program using queue data structure
 #include <stdio.h>
-#define SIZE 5
+#define size 5
+int queue[size];
+int front=-1,rear=-1;
 
-int myqueue[SIZE];
-int front = -1;
-int rear = -1;
-
-// Function declarations
-void enqueue(int value);
-void dequeue();
-void display_queue();
-
-// Enqueue operation
-void enqueue(int value)
-{
-    if (rear == SIZE - 1)
+int is_full(){
+    if (rear==size-1)
     {
-        printf("Queue is full!\n");
+        printf("Queue is full..Cant store further data");
+        return 1;
+    }
+    return 0;
+}
+
+int is_empty(){
+    if (front==rear){
+        printf("Queue is empty..");
+        return 1;
+    }
+    return 0;
+}
+
+void enqueue(int x){
+    if (is_full())
+    {
+        printf("Queue is Overflow");  
+        return; 
+    }
+    rear++;
+    queue[rear] = x;
+    printf("%d enqueued to queue\n", x);
+    return;
+}
+void dequeue() {
+    if (is_empty()) {
+        printf("Queue Underflow\n");
         return;
     }
-
-    // Insert new data
-    if (front == -1)
-    {
-        front = 0;
+    front++;
+    int y = queue[front];
+    printf("%d dequeued from queue\n", y);
+    return;
+}
+void display() {
+    if (is_empty()) {
+        printf("Queue is empty\n");
+        return;
     }
-
-    rear++;
-    myqueue[rear] = value;
-
-    printf("%d inserted into the queue.\n", value);
+    printf("Queue elements: ");
+    for (int i = front+1; i <= rear; i++) {
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+    return;
 }
 
-// Dequeue operation
-void dequeue()
-{
-    if (front == -1)
-    {
-        printf("Queue is empty!\n");
-    }
-    else
-    {
-        printf("Deleted element: %d\n", myqueue[front]);
-
-        front++;
-
-        if (front > rear)
-        {
-            front = rear = -1;
-        }
-    }
-}
-
-// Display operation
-void display_queue()
-{
-    int i;
-
-    if (front == -1)
-    {
-        printf("Queue is empty!\n");
-    }
-    else
-    {
-        printf("Queue elements are:\n");
-
-        for (i = front; i <= rear; i++)
-        {
-            printf("%d ", myqueue[i]);
-        }
-
-        printf("\n");
-    }
-}
-
-// Main function
-int main()
-{
-    int option, data;
-
-    do
-    {
-        printf("\n----- QUEUE OPERATIONS -----\n");
-        printf("1. Enqueue data\n");
-        printf("2. Dequeue data\n");
-        printf("3. Display queue\n");
-        printf("4. Exit\n");
-
+int main() {
+    int choice, z;
+    while (1) {
+        printf("1. Enqueue\n2. Dequeue\n3. Display\n4. Exit\n");
         printf("Enter your choice: ");
-        scanf("%d", &option);
-
-        switch (option)
-        {
+        if (scanf("%d", &choice) != 1) {
+            return 1;
+        }
+        switch (choice) {
             case 1:
-                printf("Enter the queue data: ");
-                scanf("%d", &data);
-
-                enqueue(data);
+                printf("Enter value to enqueue: ");
+                if (scanf("%d", &z) != 1) {
+                    return 1;
+                }
+                enqueue(z);
                 break;
-
             case 2:
                 dequeue();
                 break;
-
             case 3:
                 display();
                 break;
-
             case 4:
-                printf("Thank you!\n");
-                break;
-
+                printf("THANK YOU\n");
+                return 0;
             default:
-                printf("Invalid choice!\n");
+                printf("Invalid choice\n");
         }
-
-    } while (option != 4);
-
-    return 0;
+    }
 }
